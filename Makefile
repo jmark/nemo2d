@@ -31,7 +31,7 @@ FCFLAGS += -ffree-line-length-none
 FCFLAGS += -J$(BUILDDIR)
 
 # ---------------------------------------------------------------------------- #
-# PARALLIZATION Enable this in order to active OpenMP.
+# PARALLELIZATION: Enable following flag in order to active OpenMP.
 
 #FCFLAGS += -fopenmp
 
