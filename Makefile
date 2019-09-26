@@ -33,10 +33,9 @@ FCFLAGS += -J$(BUILDDIR)
 # ---------------------------------------------------------------------------- #
 # PARALLIZATION Enable this in order to active OpenMP.
 
-FCFLAGS += -fopenmp
+#FCFLAGS += -fopenmp
 
 # ---------------------------------------------------------------------------- #
-# Compile time configuration
 
 FCFLAGS += -DPP_N_NODES=4
 
@@ -48,15 +47,20 @@ FCFLAGS += -DPP_SETUP_LINEAR_ADVECTION
 # -------------------------------------- #
 
 TIMEDISC    = source/timedisc/rk-5-4-ssp
+
+# -------------------------------------- #
+
 EQUATIONS   = source/equations/euler
 
 # -------------------------------------- #
 
 RIEMANN     = $(EQUATIONS)/riemann/rusanov
 
+# -------------------------------------- #
+
 # Only used by 'splitform' kernel.
-#TWOPOINT    = $(EQUATIONS)/two_point_flux/standard
-TWOPOINT    = $(EQUATIONS)/two_point_flux/chandrashekar
+TWOPOINT    = $(EQUATIONS)/two_point_flux/standard
+#TWOPOINT    = $(EQUATIONS)/two_point_flux/chandrashekar
 
 # -------------------------------------- #
 

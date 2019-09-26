@@ -39,7 +39,7 @@ make
 
 ## Parallelization ##
 
-Parallelization is provided via OpenMP.
+Parallelization is provided via OpenMP. Enable '-fopenmp' flag in the Makefile.
 
 ```bash
 export OMP_NUM_THREADS=${NUMBER_OF_THREADS}
