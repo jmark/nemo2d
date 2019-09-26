@@ -12,12 +12,6 @@
 !!
 !! ========================================================================== !!
 
-# define TRY(CALL) \
-    ok = CALL; \
-    if (.not. ok) then; \
-        return; \
-    end if; 
-
 module timedisc_mod
 
 use globals_mod
