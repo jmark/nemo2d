@@ -67,6 +67,8 @@ code and build directories.
 
     NUMBER_OF_THREADS=4 # quadcore cpu
 
+    rm -vf "${WORKDIR}/"*.vtk # remove all plot files
+
     make BUILDDIR="${BUILDDIR}" -C "${SOURCEDIR}" || exit $?
 
     export OMP_NUM_THREADS="${NUMBER_OF_THREADS}"
@@ -74,5 +76,9 @@ code and build directories.
 ```
 
 ## Tips ##
-When encountering weird compiler errors it might help to just delete the 'build
-directory' and recompile.
+After major changes in the code it is advisable to delete the build directory
+and compile from a clean state.
+```bash
+    rm -r build
+    make
+```
