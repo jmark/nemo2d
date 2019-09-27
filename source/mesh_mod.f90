@@ -56,7 +56,7 @@ type :: mesh_t
 
 end type
 
-abstract interface
+interface
 
     subroutine mesh_iterate_cells_cb_t(cell)
 
