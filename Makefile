@@ -64,11 +64,10 @@ TWOPOINT    = $(EQUATIONS)/two_point_flux/standard
 
 # -------------------------------------- #
 
-KERNEL      = source/kernel/fv
-
-#KERNEL      = source/kernel/dg/weakform
-#KERNEL      = source/kernel/dg/strongform
-#KERNEL      = source/kernel/dg/splitform
+#KERNEL      = source/kernel/fv
+KERNEL      = source/kernel/dg/weakform
+##KERNEL      = source/kernel/dg/strongform
+KERNEL      = source/kernel/dg/splitform
 
 # ---------------------------------------------------------------------------- #
 # Only change following lines if you know what you are doing!
@@ -82,6 +81,7 @@ MODULES += $(TWOPOINT)/two_point_flux_mod.f90
 MODULES += $(RIEMANN)/riemann_mod.f90
 MODULES += $(KERNEL)/kernel_utils_mod.f90
 MODULES += source/mesh_mod.f90
+MODULES += source/boundary_mod.f90
 MODULES += source/source_mod.f90
 MODULES += $(KERNEL)/kernel_mod.f90
 MODULES += $(EQUATIONS)/timestep_mod.f90

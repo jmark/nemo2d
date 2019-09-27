@@ -20,19 +20,28 @@ type :: cell_t
 
 end type
 
+type :: cellptr_t
+
+    type(cell_t), pointer :: ptr
+
+end type
+
 type :: side_t
 
     type(mesh_t), pointer :: mesh
 
     integer :: loc(N_DIMS)
 
-    type(cell_t), pointer :: cell_p
-    type(cell_t), pointer :: cell_m
-
-    integer :: face_p
-    integer :: face_m
-
     integer :: direction
+
+    type(cellptr_t) :: cells(2)
+
+    integer :: p,m !! plus, minus
+
+    integer :: faces(2)
+
+    integer :: boundary
+    integer :: inner,outer
 
 end type
 
@@ -99,11 +108,33 @@ subroutine mesh_init(mesh)
             mesh%xsides(i,j)%loc = (/i,j/)
 
             mesh%xsides(i,j)%direction = X_DIR
-            mesh%xsides(i,j)%face_p = SOU
-            mesh%xsides(i,j)%face_m = NOR
 
-            mesh%xsides(i,j)%cell_p => mesh%cells(i  ,j)
-            mesh%xsides(i,j)%cell_m => mesh%cells(i+1,j)
+            mesh%xsides(i,j)%p = 1
+            mesh%xsides(i,j)%m = 2
+
+            mesh%xsides(i,j)%cells(1)%ptr => mesh%cells(i  ,j)
+            mesh%xsides(i,j)%cells(2)%ptr => mesh%cells(i+1,j)
+
+            mesh%xsides(i,j)%faces = (/SOU,NOR/)
+
+            if (i < 1) then
+                mesh%xsides(i,j)%boundary = NOR
+
+                mesh%xsides(i,j)%outer = 1
+                mesh%xsides(i,j)%inner = 2
+
+            else if (i >= mesh%ncells(1)) then
+                mesh%xsides(i,j)%boundary = SOU
+
+                mesh%xsides(i,j)%inner = 1
+                mesh%xsides(i,j)%outer = 2
+
+             else
+                mesh%xsides(i,j)%boundary = 0
+
+                mesh%xsides(i,j)%inner = 0
+                mesh%xsides(i,j)%outer = 0
+            end if
         end do
     end do
     !$OMP END PARALLEL DO
@@ -117,11 +148,33 @@ subroutine mesh_init(mesh)
             mesh%ysides(i,j)%loc = (/i,j/)
 
             mesh%ysides(i,j)%direction = Y_DIR
-            mesh%ysides(i,j)%face_p = EAS
-            mesh%ysides(i,j)%face_m = WES
 
-            mesh%ysides(i,j)%cell_p => mesh%cells(i,j  )
-            mesh%ysides(i,j)%cell_m => mesh%cells(i,j+1)
+            mesh%ysides(i,j)%p = 1
+            mesh%ysides(i,j)%m = 2
+
+            mesh%ysides(i,j)%cells(1)%ptr => mesh%cells(i,j  )
+            mesh%ysides(i,j)%cells(2)%ptr => mesh%cells(i,j+1)
+
+            mesh%ysides(i,j)%faces = (/EAS,WES/)
+
+            if (j < 1) then
+                mesh%ysides(i,j)%boundary = WES
+
+                mesh%ysides(i,j)%outer = 1
+                mesh%ysides(i,j)%inner = 2
+
+            else if (j >= mesh%ncells(2)) then
+                mesh%ysides(i,j)%boundary = EAS
+
+                mesh%ysides(i,j)%inner = 1
+                mesh%ysides(i,j)%outer = 2
+
+             else
+                mesh%ysides(i,j)%boundary = 0
+
+                mesh%ysides(i,j)%inner = 0
+                mesh%ysides(i,j)%outer = 0
+            end if
         end do
     end do
     !$OMP END PARALLEL DO

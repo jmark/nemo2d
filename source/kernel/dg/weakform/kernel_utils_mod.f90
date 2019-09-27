@@ -1,6 +1,6 @@
 !! Choose one.
-!# define PP_GAUSS_NODES
-# define PP_GAUSS_LOBATTO_NODES
+# define PP_GAUSS_NODES
+!# define PP_GAUSS_LOBATTO_NODES
 
 module kernel_utils_mod
 

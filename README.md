@@ -27,21 +27,52 @@ Happy coding!
 ## Installation ##
 
 ```bash
-git clone https://github.com/jmark/nemo2d.git
-cd nemo2d # ... and modify Makefile to your needs
-make
+    git clone https://github.com/jmark/nemo2d.git
+    cd nemo2d # ... and modify Makefile to your needs
+    make
 ```
-## Usage ##
+## Running ##
 
 ```bash
-./build/nemo2d
+    ./build/nemo2d
 ```
+
+## Visualization ##
+
+In regular time intervalls 'vtk'-Files (ASCII, legacy format) are written out.
+It is a widely adopted file format and can be opened, for example, by 'Paraview'
+or 'VisIt'.
 
 ## Parallelization ##
 
 Parallelization is provided via OpenMP. Enable '-fopenmp' flag in the Makefile.
 
 ```bash
-export OMP_NUM_THREADS=${NUMBER_OF_THREADS}
-./build/nemo2d
+    export OMP_NUM_THREADS=${NUMBER_OF_THREADS}
+    ./build/nemo2d
 ```
+
+## Workflow ##
+
+It is recommended to have a little script which cleans up old files, compiles
+and runs the program in one go. Following example also allows different source
+code and build directories.
+
+```bash
+    #!/bin/bash
+
+    WORKDIR="$(pwd)" # current directory
+    BUILDDIR="${WORKDIR}/build"
+    SOURCEDIR="${HOME}/nemo2d"
+
+    NUMBER_OF_THREADS=4 # quadcore cpu
+
+    make BUILDDIR="${BUILDDIR}" -C "${SOURCEDIR}" || exit $?
+
+    export OMP_NUM_THREADS="${NUMBER_OF_THREADS}"
+    ./build/nemo2d
+```
+
+## Tips ##
+When encountering weird compiler errors it might help to just delete the 'build
+directory' and recompile.

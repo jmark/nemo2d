@@ -52,29 +52,36 @@ subroutine kernel_fill_faceflux(side)
     use riemann_mod, only: xriemann
     use riemann_mod, only: yriemann
 
+    use boundary_mod, only: boundary
+
     type(side_t), intent(in) :: side
 
+    real(dp) :: facevars(N_NODES,N_VARS,2)
     real(dp) :: faceflux(N_NODES,N_VARS)
+
     integer :: i
+
+    facevars(:,:,side%p) = side%cells(side%p)%ptr%facevars(:,:,side%faces(side%p))
+    facevars(:,:,side%m) = side%cells(side%m)%ptr%facevars(:,:,side%faces(side%m)) 
+
+    if (side%boundary > 0) then
+        call boundary(side,facevars(:,:,side%inner),facevars(:,:,side%outer))
+    end if
 
     select case(side%direction)
         case(X_DIR)
             do i = 1,N_NODES
-                faceflux(i,:) = xriemann(&
-                    side%cell_p%facevars(i,:,side%face_p),&
-                    side%cell_m%facevars(i,:,side%face_m))
+                faceflux(i,:) = xriemann(facevars(i,:,side%p),facevars(i,:,side%m))
             end do
 
         case(Y_DIR)
             do i = 1,N_NODES
-                faceflux(i,:) = yriemann(&
-                    side%cell_p%facevars(i,:,side%face_p),&
-                    side%cell_m%facevars(i,:,side%face_m))
+                faceflux(i,:) = yriemann(facevars(i,:,side%p),facevars(i,:,side%m))
             end do
     end select
 
-    side%cell_p%faceflux(:,:,side%face_p) = faceflux
-    side%cell_m%faceflux(:,:,side%face_m) = faceflux
+    side%cells(side%p)%ptr%faceflux(:,:,side%faces(side%p)) = faceflux
+    side%cells(side%m)%ptr%faceflux(:,:,side%faces(side%m)) = faceflux
 
 end subroutine
 
