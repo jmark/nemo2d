@@ -37,7 +37,7 @@ FCFLAGS += -J$(BUILDDIR)
 
 # ---------------------------------------------------------------------------- #
 
-FCFLAGS += -DPP_N_NODES=4
+FCFLAGS += -DPP_N_NODES=4 # number of nodes: Npoly = N_NODES-1
 
 # -------------------------------------- #
 
@@ -64,10 +64,10 @@ TWOPOINT    = $(EQUATIONS)/two_point_flux/standard
 
 # -------------------------------------- #
 
-#KERNEL      = source/kernel/fv
-KERNEL      = source/kernel/dg/weakform
-##KERNEL      = source/kernel/dg/strongform
-KERNEL      = source/kernel/dg/splitform
+KERNEL      = source/kernel/fv
+#KERNEL      = source/kernel/dg/weakform
+#KERNEL      = source/kernel/dg/strongform
+#KERNEL      = source/kernel/dg/splitform
 
 # ---------------------------------------------------------------------------- #
 # Only change following lines if you know what you are doing!
