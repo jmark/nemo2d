@@ -27,19 +27,19 @@ Happy coding!
 ## Installation ##
 
 ```bash
-    git clone https://github.com/jmark/nemo2d.git
-    cd nemo2d # ... and modify Makefile to your needs
-    make
+git clone https://github.com/jmark/nemo2d.git
+cd nemo2d # ... and modify Makefile to your needs
+make
 ```
 ## Running ##
 
 ```bash
-    ./build/nemo2d
+./build/nemo2d
 ```
 
 ## Visualization ##
 
-In regular time intervalls 'vtk'-Files (ASCII, legacy format) are written out.
+In regular time intervalls 'vtk'-files (ASCII, legacy format) are written out.
 It is a widely adopted file format and can be opened, for example, by 'Paraview'
 or 'VisIt'.
 
@@ -48,37 +48,37 @@ or 'VisIt'.
 Parallelization is provided via OpenMP. Enable '-fopenmp' flag in the Makefile.
 
 ```bash
-    export OMP_NUM_THREADS=${NUMBER_OF_THREADS}
-    ./build/nemo2d
+export OMP_NUM_THREADS=${NUMBER_OF_THREADS}
+./build/nemo2d
 ```
 
 ## Workflow ##
 
-It is recommended to have a little script which cleans up old files, compiles
+It is recommended to use a little script which cleans up old files, compiles
 and runs the program in one go. Following example also allows different source
-code and build directories.
+and build directories.
 
 ```bash
-    #!/bin/bash
+#!/bin/bash
 
-    WORKDIR="$(pwd)" # current directory
-    BUILDDIR="${WORKDIR}/build"
-    SOURCEDIR="${HOME}/nemo2d"
+WORKDIR="$(pwd)" # current directory
+BUILDDIR="${WORKDIR}/build"
+SOURCEDIR="${HOME}/nemo2d"
 
-    NUMBER_OF_THREADS=4 # quadcore cpu
+NUMBER_OF_THREADS=4 # quadcore cpu
 
-    rm -vf "${WORKDIR}/"*.vtk # remove all plot files
+rm -vf "${WORKDIR}/"*.vtk # remove all plot files
 
-    make BUILDDIR="${BUILDDIR}" -C "${SOURCEDIR}" || exit $?
+make BUILDDIR="${BUILDDIR}" -C "${SOURCEDIR}" || exit $?
 
-    export OMP_NUM_THREADS="${NUMBER_OF_THREADS}"
-    ./build/nemo2d
+export OMP_NUM_THREADS="${NUMBER_OF_THREADS}"
+./build/nemo2d
 ```
 
 ## Tips ##
 After major changes in the code it is advisable to delete the build directory
 and compile from a clean state.
 ```bash
-    rm -r build
-    make
+rm -r build
+make
 ```
