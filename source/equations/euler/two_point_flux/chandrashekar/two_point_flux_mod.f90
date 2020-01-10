@@ -13,7 +13,7 @@ pure elemental function logmean(a,b) result(r)
     real(dp), intent(in)    :: a,b
     real(dp)                :: x,u,r
 
-    real(dp),parameter  :: eps = 1e-5
+    real(dp), parameter :: eps = 1e-5
     real(dp), parameter :: c1 = 1.0/6.0
     real(dp), parameter :: c2 = 2.0/45.0
     real(dp), parameter :: c3 = 22.0/945.0

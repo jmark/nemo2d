@@ -220,7 +220,7 @@ subroutine mesh_exchange_ghosts(mesh)
     type(mesh_t), intent(inout) :: mesh
 
     !! Periodic BC
-    !! Let's be lazy and copy everything.
+    !! Let us be lazy and copy everything.
 
     associate(x => mesh%ncells(1),y => mesh%ncells(2))
     mesh%cells(0  ,:) = mesh%cells(x,:)
