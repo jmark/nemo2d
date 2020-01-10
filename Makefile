@@ -31,18 +31,13 @@ FCFLAGS += -ffree-line-length-none
 FCFLAGS += -J$(BUILDDIR)
 
 # ---------------------------------------------------------------------------- #
-# PARALLELIZATION: Enable following flag in order to active OpenMP.
+# PARALLELIZATION: Uncomment following flag in order to active OpenMP.
 
-#FCFLAGS += -fopenmp
+# FCFLAGS += -fopenmp
 
 # ---------------------------------------------------------------------------- #
 
 FCFLAGS += -DPP_N_NODES=4 # number of nodes: Npoly = N_NODES-1
-
-# -------------------------------------- #
-
-#FCFLAGS += -DPP_SETUP_SEDOV_BLAST
-FCFLAGS += -DPP_SETUP_LINEAR_ADVECTION
 
 # -------------------------------------- #
 
@@ -58,8 +53,8 @@ RIEMANN     = $(EQUATIONS)/riemann/rusanov
 
 # -------------------------------------- #
 
-# Only used by 'splitform' kernel.
-TWOPOINT    = $(EQUATIONS)/two_point_flux/standard
+# Uncomment when you want to use the 'splitform' kernel.
+#TWOPOINT    = $(EQUATIONS)/two_point_flux/standard
 #TWOPOINT    = $(EQUATIONS)/two_point_flux/chandrashekar
 
 # -------------------------------------- #
@@ -69,24 +64,33 @@ KERNEL      = source/kernel/fv
 #KERNEL      = source/kernel/dg/strongform
 #KERNEL      = source/kernel/dg/splitform
 
+# -------------------------------------- #
+
+SETUP   = source/setups/advecting-bell
+
+# ---------------------------------------------------------------------------- #
 # ---------------------------------------------------------------------------- #
 # Only change following lines if you know what you are doing!
 
 # !! Sorted in order of dependency. !!
 MODULES =
 MODULES += source/globals_mod.f90
-MODULES += source/config_mod.f90
+MODULES += $(SETUP)/config_mod.f90
 MODULES += $(EQUATIONS)/equations_mod.f90
-MODULES += $(TWOPOINT)/two_point_flux_mod.f90
+
+ifneq ($(origin TWOPOINT),undefined)
+    MODULES += $(TWOPOINT)/two_point_flux_mod.f90
+endif
+
 MODULES += $(RIEMANN)/riemann_mod.f90
 MODULES += $(KERNEL)/kernel_utils_mod.f90
 MODULES += source/mesh_mod.f90
-MODULES += source/boundary_mod.f90
-MODULES += source/source_mod.f90
+MODULES += $(SETUP)/boundary_mod.f90
+MODULES += $(SETUP)/source_mod.f90
 MODULES += $(KERNEL)/kernel_mod.f90
 MODULES += $(EQUATIONS)/timestep_mod.f90
 MODULES += $(TIMEDISC)/timedisc_mod.f90
-MODULES += source/setup_mod.f90
+MODULES += $(SETUP)/setup_mod.f90
 MODULES += source/nemo2d_prog.f90
 
 $(BUILDDIR)/nemo2d: $(BUILDDIR)/.dummy Makefile $(MODULES)
@@ -97,6 +101,8 @@ $(BUILDDIR)/nemo2d: $(BUILDDIR)/.dummy Makefile $(MODULES)
 
 nemo2d: $(BUILDDIR)/.dummy
 nemo2d: $(BUILDDIR)/nemo2d
+
+# -------------------------------------- #
 
 clean clear:
 	rm -rf $(BUILDDIR)
